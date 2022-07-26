@@ -44,6 +44,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import okhttp3.OkHttpClient
 import okio.Path.Companion.toOkioPath
 
 @NoLiveLiterals
@@ -57,7 +58,10 @@ class EmojiSearchActivity : ComponentActivity() {
     val models = MutableStateFlow(initialViewModel)
 
     val cacheDirectory = cacheDir.toOkioPath() / "zipline"
-    val emojiSearchZipline = EmojiSearchZipline(cacheDirectory)
+    val client = OkHttpClient()
+    val ziplineHttpClient = OkHttpZiplineHttpClient(client)
+    val hostApi = RealHostApi(client)
+    val emojiSearchZipline = EmojiSearchZipline(cacheDirectory, ziplineHttpClient, hostApi)
     emojiSearchZipline.produceModelsIn(scope, events, models)
 
     val profilerToggle = ProfilerToggle(

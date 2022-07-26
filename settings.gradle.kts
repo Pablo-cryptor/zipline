@@ -12,6 +12,7 @@ include(":zipline-loader")
 include(":zipline-profiler")
 
 include(":samples:emoji-search:android")
+include(":samples:emoji-search:ios:shared")
 include(":samples:emoji-search:presenters")
 include(":samples:octane")
 include(":samples:trivia:trivia-host")

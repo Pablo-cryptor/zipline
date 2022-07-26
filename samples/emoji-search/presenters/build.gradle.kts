@@ -8,6 +8,7 @@ plugins {
 }
 
 kotlin {
+  ios()
   jvm()
 
   js {
@@ -18,14 +19,24 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        implementation(projects.zipline)
+        api(projects.zipline)
       }
     }
+    val hostMain by creating {
+      dependsOn(commonMain)
+      dependencies {
+        implementation(projects.ziplineLoader)
+        api(Dependencies.okio)
+      }
+    }
+    val iosMain by getting {
+      dependsOn(hostMain)
+    }
     val jvmMain by getting {
+      dependsOn(hostMain)
       dependencies {
         implementation(Dependencies.okHttp)
         implementation(Dependencies.sqldelightDriverAndroid)
-        implementation(projects.ziplineLoader)
       }
     }
   }
